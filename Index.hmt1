@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Kegel Coach</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f2f6ff;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 32px;
+    }
+
+    #timer {
+      font-size: 70px;
+      margin: 30px;
+    }
+
+    button {
+      font-size: 22px;
+      padding: 15px 30px;
+      border: none;
+      border-radius: 12px;
+      margin: 10px;
+    }
+
+    #start {
+      background: #1976d2;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>💪 My Kegel Coach</h1>
+  <p>Guided Kegel exercise</p>
+
+  <div id="phase">Ready</div>
+  <div id="timer">3</div>
+
+  <button id="start" onclick="startWorkout()">Start</button>
+
+  <p>Repetitions: <span id="reps">0</span> / 10</p>
+  <p>Sessions completed: <span id="sessions">0</span></p>
+
+<script>
+let time = 3;
+let reps = 0;
+let running = false;
+
+function startWorkout() {
+  if (running) return;
+
+  running = true;
+  reps = 0;
+  time = 3;
+  document.getElementById("reps").textContent = reps;
+
+  runPhase("Squeeze");
+}
+
+function runPhase(phase) {
+  document.getElementById("phase").textContent = phase;
+  time = 3;
+  document.getElementById("timer").textContent = time;
+
+  let countdown = setInterval(() => {
+    time--;
+    document.getElementById("timer").textContent = time;
+
+    if (time <= 0) {
+      clearInterval(countdown);
+
+      if (phase === "Squeeze") {
+        runPhase("Relax");
+      } else {
+        reps++;
+
+        document.getElementById("reps").textContent = reps;
+
+        if (reps >= 10) {
+          finishWorkout();
+        } else {
+          runPhase("Squeeze");
+        }
+      }
+    }
+  }, 1000);
+}
+
+function finishWorkout() {
+  running = false;
+  document.getElementById("phase").textContent = "🎉 Complete!";
+  document.getElementById("timer").textContent = "✓";
+
+  let sessions =
+    Number(localStorage.getItem("sessions") || 0) + 1;
+
+  localStorage.setItem("sessions", sessions);
+
+  document.getElementById("sessions").textContent = sessions;
+}
+
+document.getElementById("sessions").textContent =
+  localStorage.getItem("sessions") || 0;
+</script>
+
+</body>
+</html>
