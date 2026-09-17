@@ -13,33 +13,35 @@
 
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: #f2f7f6;
-      color: #1f2937;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+      background: #f4f8f7;
+      color: #173b35;
     }
 
     .app {
-      max-width: 500px;
+      max-width: 600px;
       margin: auto;
       min-height: 100vh;
-      background: white;
+      padding-bottom: 40px;
     }
 
     header {
-      background: #16a085;
+      background: linear-gradient(135deg, #16a085, #0e7c68);
       color: white;
-      padding: 25px 20px;
+      padding: 30px 20px;
       text-align: center;
+      border-radius: 0 0 28px 28px;
     }
 
     header h1 {
       margin: 0;
-      font-size: 28px;
+      font-size: 30px;
     }
 
     header p {
       margin: 8px 0 0;
       opacity: 0.9;
+      font-size: 15px;
     }
 
     .content {
@@ -48,78 +50,794 @@
 
     .card {
       background: white;
-      border-radius: 18px;
+      border-radius: 20px;
       padding: 20px;
       margin-bottom: 18px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-      text-align: center;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    }
+
+    .card h2 {
+      margin-top: 0;
+      font-size: 20px;
     }
 
     .timer {
-      font-size: 64px;
-      font-weight: bold;
-      margin: 20px 0 5px;
-      color: #16a085;
+      text-align: center;
+      padding: 25px 10px;
     }
 
     .phase {
-      font-size: 25px;
+      font-size: 24px;
       font-weight: bold;
-      margin: 10px;
+      margin-bottom: 10px;
     }
 
-    .instruction {
-      color: #6b7280;
+    .timer-number {
+      font-size: 72px;
+      font-weight: 700;
+      color: #16a085;
+      line-height: 1;
+      margin: 20px 0;
+    }
+
+    .rep {
+      font-size: 15px;
+      color: #6c7f7b;
       margin-bottom: 20px;
     }
 
     button {
+      width: 100%;
       border: none;
-      border-radius: 12px;
-      padding: 15px 25px;
+      border-radius: 14px;
+      padding: 15px;
       font-size: 17px;
-      font-weight: bold;
+      font-weight: 600;
       cursor: pointer;
-      margin: 5px;
+      margin-top: 10px;
     }
 
-    .start {
+    .primary {
       background: #16a085;
       color: white;
-      width: 85%;
     }
 
-    .stop {
-      background: #e74c3c;
-      color: white;
-      width: 85%;
+    .primary:active {
+      transform: scale(0.98);
     }
 
-    .reset {
-      background: #e5e7eb;
-      color: #333;
+    .secondary {
+      background: #e8f4f1;
+      color: #117563;
+    }
+
+    .danger {
+      background: #fbe9e7;
+      color: #c0392b;
+    }
+
+    .progress-box {
+      text-align: center;
+    }
+
+    .progress-number {
+      font-size: 42px;
+      font-weight: bold;
+      color: #16a085;
     }
 
     .progress-bar {
-      height: 15px;
-      background: #e5e7eb;
+      width: 100%;
+      height: 14px;
+      background: #e5eeee;
       border-radius: 20px;
       overflow: hidden;
-      margin-top: 12px;
+      margin: 15px 0;
     }
 
-    .progress {
+    .progress-fill {
       height: 100%;
       width: 0%;
       background: #16a085;
+      border-radius: 20px;
       transition: width 0.3s;
     }
 
     .stats {
-      display: flex;
-      justify-content: space-around;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+
+    .stat {
+      background: #f4f8f7;
+      padding: 15px 5px;
+      border-radius: 14px;
       text-align: center;
     }
 
-    .stat-number {
-      font-size: 28
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      color: #16a085;
+    }
+
+    .stat span {
+      font-size: 12px;
+      color: #71827e;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-top: 15px;
+      margin-bottom: 7px;
+    }
+
+    input[type="time"] {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid #d5e3df;
+      border-radius: 12px;
+      font-size: 17px;
+      background: white;
+    }
+
+    .info {
+      font-size: 14px;
+      line-height: 1.6;
+      color: #5f716d;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 15px;
+    }
+
+    .check input {
+      width: 20px;
+      height: 20px;
+    }
+
+    .message {
+      min-height: 22px;
+      margin-top: 12px;
+      text-align: center;
+      font-weight: 600;
+      color: #16a085;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px 20px;
+      color: #81918e;
+      font-size: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <header>
+    <h1>💪 My Kegel Coach</h1>
+    <p>Simple guided pelvic-floor exercises for men</p>
+  </header>
+
+  <div class="content">
+
+    <!-- WORKOUT -->
+    <div class="card timer">
+
+      <div class="phase" id="phase">Ready</div>
+
+      <div class="timer-number" id="timer">5</div>
+
+      <div class="rep" id="rep">
+        Press Start when you are ready
+      </div>
+
+      <button class="primary" id="startBtn" onclick="startWorkout()">
+        ▶️ Start Workout
+      </button>
+
+      <button class="secondary" onclick="resetWorkout()">
+        Reset
+      </button>
+
+      <div class="message" id="message"></div>
+
+    </div>
+
+
+    <!-- TODAY'S PROGRESS -->
+    <div class="card progress-box">
+
+      <h2>Today's Progress</h2>
+
+      <div class="progress-number">
+        <span id="completed">0</span> / 10
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+
+      <p class="info">
+        Complete one session of 10 repetitions today.
+      </p>
+
+    </div>
+
+
+    <!-- STATS -->
+    <div class="card">
+
+      <h2>Your Progress</h2>
+
+      <div class="stats">
+
+        <div class="stat">
+          <strong id="totalSessions">0</strong>
+          <span>Sessions</span>
+        </div>
+
+        <div class="stat">
+          <strong id="totalReps">0</strong>
+          <span>Total Reps</span>
+        </div>
+
+        <div class="stat">
+          <strong id="streak">0</strong>
+          <span>Day Streak</span>
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- REMINDERS -->
+    <div class="card">
+
+      <h2>🔔 Daily Reminder</h2>
+
+      <p class="info">
+        Choose a time to remind yourself to exercise.
+      </p>
+
+      <label for="reminderTime">Reminder time</label>
+
+      <input
+        type="time"
+        id="reminderTime"
+        onchange="saveReminder()"
+      >
+
+      <div class="check">
+        <input
+          type="checkbox"
+          id="reminderEnabled"
+          onchange="saveReminder()"
+        >
+        <label for="reminderEnabled" style="margin:0;">
+          Enable reminder
+        </label>
+      </div>
+
+      <button class="secondary" onclick="requestNotification()">
+        Allow Notifications
+      </button>
+
+      <div class="message" id="reminderMessage"></div>
+
+    </div>
+
+
+    <!-- INSTRUCTIONS -->
+    <div class="card">
+
+      <h2>How to Exercise</h2>
+
+      <p class="info">
+        <strong>1. Get comfortable.</strong><br>
+        Sit, stand or lie down comfortably.
+      </p>
+
+      <p class="info">
+        <strong>2. Squeeze.</strong><br>
+        Gently tighten the muscles you would use to stop passing
+        urine or gas. Hold the squeeze while the timer counts down.
+      </p>
+
+      <p class="info">
+        <strong>3. Relax.</strong><br>
+        Completely relax the muscles during the rest period.
+      </p>
+
+      <p class="info">
+        <strong>4. Repeat.</strong><br>
+        Complete 10 repetitions.
+      </p>
+
+      <p class="info">
+        Do not regularly practice Kegels while urinating. Stop if
+        you experience pain or significant discomfort.
+      </p>
+
+    </div>
+
+  </div>
+
+  <footer>
+    My Kegel Coach • Your progress is stored locally on your device.
+  </footer>
+
+</div>
+
+
+<script>
+
+  /* =========================
+     SETTINGS
+  ========================= */
+
+  const TOTAL_REPS = 10;
+  const SQUEEZE_SECONDS = 5;
+  const RELAX_SECONDS = 5;
+
+  let currentRep = 0;
+  let secondsLeft = SQUEEZE_SECONDS;
+  let phase = "squeeze";
+  let workoutRunning = false;
+  let interval = null;
+
+
+  /* =========================
+     STORAGE
+  ========================= */
+
+  function getToday() {
+    return new Date().toISOString().split("T")[0];
+  }
+
+  function loadData() {
+
+    let data = JSON.parse(
+      localStorage.getItem("kegelData") || "{}"
+    );
+
+    if (!data.sessions) data.sessions = 0;
+    if (!data.totalReps) data.totalReps = 0;
+    if (!data.streak) data.streak = 0;
+    if (!data.lastDate) data.lastDate = null;
+    if (!data.todayReps) data.todayReps = 0;
+    if (data.todayDate !== getToday()) {
+      data.todayReps = 0;
+      data.todayDate = getToday();
+    }
+
+    localStorage.setItem(
+      "kegelData",
+      JSON.stringify(data)
+    );
+
+    return data;
+  }
+
+
+  function saveData(data) {
+
+    localStorage.setItem(
+      "kegelData",
+      JSON.stringify(data)
+    );
+
+  }
+
+
+  /* =========================
+     UPDATE SCREEN
+  ========================= */
+
+  function updateProgress() {
+
+    const data = loadData();
+
+    document.getElementById("completed").textContent =
+      data.todayReps;
+
+    document.getElementById("progressFill").style.width =
+      Math.min((data.todayReps / TOTAL_REPS) * 100, 100) + "%";
+
+    document.getElementById("totalSessions").textContent =
+      data.sessions;
+
+    document.getElementById("totalReps").textContent =
+      data.totalReps;
+
+    document.getElementById("streak").textContent =
+      data.streak;
+
+  }
+
+
+  /* =========================
+     START WORKOUT
+  ========================= */
+
+  function startWorkout() {
+
+    if (workoutRunning) return;
+
+    const data = loadData();
+
+    if (data.todayReps >= TOTAL_REPS) {
+
+      document.getElementById("message").textContent =
+        "🎉 Today's workout is complete!";
+
+      return;
+    }
+
+    workoutRunning = true;
+    currentRep = data.todayReps;
+    phase = "squeeze";
+    secondsLeft = SQUEEZE_SECONDS;
+
+    document.getElementById("startBtn").textContent =
+      "⏸ Workout Running";
+
+    document.getElementById("message").textContent = "";
+
+    updateTimer();
+
+    interval = setInterval(tick, 1000);
+
+  }
+
+
+  /* =========================
+     TIMER
+  ========================= */
+
+  function tick() {
+
+    secondsLeft--;
+
+    if (secondsLeft <= 0) {
+
+      if (phase === "squeeze") {
+
+        phase = "relax";
+        secondsLeft = RELAX_SECONDS;
+
+      } else {
+
+        completeRep();
+
+        if (!workoutRunning) return;
+
+        phase = "squeeze";
+        secondsLeft = SQUEEZE_SECONDS;
+
+      }
+
+    }
+
+    updateTimer();
+
+  }
+
+
+  function updateTimer() {
+
+    const timer = document.getElementById("timer");
+    const phaseText = document.getElementById("phase");
+    const repText = document.getElementById("rep");
+
+    timer.textContent = secondsLeft;
+
+    if (phase === "squeeze") {
+
+      phaseText.textContent = "💪 SQUEEZE";
+      repText.textContent =
+        "Gently tighten your pelvic-floor muscles";
+
+    } else {
+
+      phaseText.textContent = "😌 RELAX";
+      repText.textContent =
+        "Release completely and breathe normally";
+
+    }
+
+    repText.textContent +=
+      " • Rep " + (currentRep + 1) + " of " + TOTAL_REPS;
+
+  }
+
+
+  /* =========================
+     COMPLETE REP
+  ========================= */
+
+  function completeRep() {
+
+    const data = loadData();
+
+    data.todayReps++;
+    data.totalReps++;
+
+    currentRep = data.todayReps;
+
+    saveData(data);
+    updateProgress();
+
+    if (data.todayReps >= TOTAL_REPS) {
+
+      finishWorkout();
+
+    }
+
+  }
+
+
+  /* =========================
+     FINISH
+  ========================= */
+
+  function finishWorkout() {
+
+    clearInterval(interval);
+
+    interval = null;
+    workoutRunning = false;
+
+    const data = loadData();
+
+    const today = getToday();
+
+    if (data.lastDate !== today) {
+
+      data.sessions++;
+
+      if (data.lastDate) {
+
+        const previous = new Date(data.lastDate);
+        const current = new Date(today);
+
+        const difference =
+          Math.round(
+            (current - previous) /
+            (1000 * 60 * 60 * 24)
+          );
+
+        if (difference === 1) {
+          data.streak++;
+        } else {
+          data.streak = 1;
+        }
+
+      } else {
+
+        data.streak = 1;
+
+      }
+
+      data.lastDate = today;
+
+    }
+
+    saveData(data);
+
+    document.getElementById("phase").textContent =
+      "🎉 Complete!";
+
+    document.getElementById("timer").textContent =
+      "✓";
+
+    document.getElementById("rep").textContent =
+      "Excellent work. You completed today's session.";
+
+    document.getElementById("startBtn").textContent =
+      "✓ Workout Complete";
+
+    document.getElementById("message").textContent =
+      "Come back tomorrow for your next session.";
+
+    updateProgress();
+
+  }
+
+
+  /* =========================
+     RESET
+  ========================= */
+
+  function resetWorkout() {
+
+    clearInterval(interval);
+
+    interval = null;
+    workoutRunning = false;
+
+    currentRep = 0;
+    phase = "squeeze";
+    secondsLeft = SQUEEZE_SECONDS;
+
+    document.getElementById("phase").textContent =
+      "Ready";
+
+    document.getElementById("timer").textContent =
+      SQUEEZE_SECONDS;
+
+    document.getElementById("rep").textContent =
+      "Press Start when you are ready";
+
+    document.getElementById("startBtn").textContent =
+      "▶️ Start Workout";
+
+    document.getElementById("message").textContent =
+      "";
+
+  }
+
+
+  /* =========================
+     REMINDER
+  ========================= */
+
+  function saveReminder() {
+
+    const time =
+      document.getElementById("reminderTime").value;
+
+    const enabled =
+      document.getElementById("reminderEnabled").checked;
+
+    localStorage.setItem(
+      "kegelReminder",
+      JSON.stringify({
+        time: time,
+        enabled: enabled
+      })
+    );
+
+    document.getElementById("reminderMessage").textContent =
+      enabled
+        ? "Reminder saved for " + time
+        : "Reminder turned off.";
+
+  }
+
+
+  function loadReminder() {
+
+    const saved =
+      JSON.parse(
+        localStorage.getItem("kegelReminder") || "null"
+      );
+
+    if (!saved) return;
+
+    document.getElementById("reminderTime").value =
+      saved.time || "";
+
+    document.getElementById("reminderEnabled").checked =
+      saved.enabled || false;
+
+  }
+
+
+  /* =========================
+     NOTIFICATIONS
+  ========================= */
+
+  function requestNotification() {
+
+    if (!("Notification" in window)) {
+
+      document.getElementById("reminderMessage").textContent =
+        "Notifications are not supported by this browser.";
+
+      return;
+
+    }
+
+    Notification.requestPermission().then(function(permission) {
+
+      if (permission === "granted") {
+
+        document.getElementById("reminderMessage").textContent =
+          "🔔 Notifications allowed.";
+
+      } else {
+
+        document.getElementById("reminderMessage").textContent =
+          "Notifications were not enabled.";
+
+      }
+
+    });
+
+  }
+
+
+  /* =========================
+     CHECK REMINDER
+  ========================= */
+
+  function checkReminder() {
+
+    const saved =
+      JSON.parse(
+        localStorage.getItem("kegelReminder") || "null"
+      );
+
+    if (!saved || !saved.enabled || !saved.time) return;
+
+    const now = new Date();
+
+    const currentTime =
+      String(now.getHours()).padStart(2, "0") +
+      ":" +
+      String(now.getMinutes()).padStart(2, "0");
+
+    const today =
+      now.toISOString().split("T")[0];
+
+    const lastReminder =
+      localStorage.getItem("lastReminder");
+
+    if (
+      currentTime === saved.time &&
+      lastReminder !== today
+    ) {
+
+      localStorage.setItem(
+        "lastReminder",
+        today
+      );
+
+      if (
+        "Notification" in window &&
+        Notification.permission === "granted"
+      ) {
+
+        new Notification(
+          "My Kegel Coach",
+          {
+            body: "It's time for your Kegel exercise.",
+            icon: ""
+          }
+        );
+
+      } else {
+
+        document.getElementById("reminderMessage").textContent =
+          "🔔 It's time for your Kegel exercise.";
+
+      }
+
+    }
+
+  }
+
+
+  /* =========================
+     START APP
+  ========================= */
+
+  updateProgress();
+  loadReminder();
+
+  setInterval(checkReminder, 30000);
+
+</script>
+
+</body>
+</html>
