@@ -1,370 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My-Kegel Coach</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My-Kegel-Coach</title>
 
-<style>
-* {
-  box-sizing: border-box;
-}
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #f4f7fb;
-  color: #172033;
-}
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f7fb;
+      color: #172033;
+    }
 
-.app {
-  max-width: 500px;
-  margin: auto;
-  min-height: 100vh;
-  padding: 20px;
-}
+    .app {
+      max-width: 500px;
+      margin: auto;
+      padding: 25px 18px 40px;
+    }
 
-header {
-  text-align: center;
-  padding: 25px 10px;
-}
+    h1 {
+      text-align: center;
+      margin-bottom: 8px;
+      font-size: 30px;
+    }
 
-header h1 {
-  margin: 0;
-  font-size: 32px;
-}
+    .subtitle {
+      text-align: center;
+      color: #667085;
+      line-height: 1.5;
+      margin-bottom: 25px;
+    }
 
-header p {
-  color: #667085;
-}
+    .card {
+      background: white;
+      border-radius: 20px;
+      padding: 25px;
+      margin-bottom: 18px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+      text-align: center;
+    }
 
-.card {
-  background: white;
-  border-radius: 20px;
-  padding: 22px;
-  margin-bottom: 18px;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-}
+    .phase {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
 
-.timer {
-  text-align: center;
-}
+    .timer {
+      font-size: 70px;
+      font-weight: bold;
+      margin: 15px 0;
+    }
 
-#phase {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
+    .instruction {
+      color: #667085;
+      min-height: 24px;
+    }
 
-#timer {
-  font-size: 64px;
-  font-weight: bold;
-  margin: 15px 0;
-}
+    button {
+      width: 100%;
+      border: none;
+      border-radius: 14px;
+      padding: 16px;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
 
-button {
-  border: none;
-  border-radius: 12px;
-  padding: 14px 20px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  margin: 5px;
-}
+    .start {
+      background: #1769e0;
+      color: white;
+    }
 
-.start {
-  background: #2563eb;
-  color: white;
-}
+    .stop {
+      background: #e9edf5;
+      color: #172033;
+    }
 
-.stop {
-  background: #e5e7eb;
-  color: #111827;
-}
+    .progress-bar {
+      width: 100%;
+      height: 14px;
+      background: #e5e7eb;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 12px;
+    }
 
-.progress-bar {
-  width: 100%;
-  height: 14px;
-  background: #e5e7eb;
-  border-radius: 20px;
-  overflow: hidden;
-}
+    .progress {
+      height: 100%;
+      width: 0%;
+      background: #1769e0;
+      transition: width 0.3s;
+    }
 
-.progress {
-  height: 100%;
-  width: 0%;
-  background: #2563eb;
-  transition: width 0.3s;
-}
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+    }
 
-.stats {
-  display: flex;
-  justify-content: space-between;
-  text-align: center;
-}
+    .stat-number {
+      font-size: 28px;
+      font-weight: bold;
+    }
 
-.stat {
-  flex: 1;
-}
+    .stat-label {
+      color: #667085;
+      font-size: 14px;
+    }
 
-.stat strong {
-  display: block;
-  font-size: 28px;
-}
-
-.stat span {
-  color: #667085;
-  font-size: 14px;
-}
-
-.info {
-  line-height: 1.6;
-  color: #475467;
-}
-
-footer {
-  text-align: center;
-  color: #98a2b3;
-  font-size: 13px;
-  padding: 20px;
-}
-</style>
+    .notice {
+      font-size: 13px;
+      color: #667085;
+      line-height: 1.5;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="app">
 
-<header>
-  <h1>💪 My-Kegel Coach</h1>
-  <p>Your daily pelvic floor exercise trainer</p>
-</header>
+  <h1>My-Kegel-Coach</h1>
 
-<div class="card timer">
-
-  <div id="phase">Ready</div>
-
-  <div id="timer">5</div>
-
-  <p id="instruction">
-    Get ready to start your Kegel exercise.
-  </p>
-
-  <button class="start" onclick="startWorkout()">
-    Start Workout
-  </button>
-
-  <button class="stop" onclick="stopWorkout()">
-    Stop
-  </button>
-
-</div>
-
-<div class="card">
-
-  <h2>Today's Progress</h2>
-
-  <div class="progress-bar">
-    <div class="progress" id="progress"></div>
+  <div class="subtitle">
+    A simple guided Kegel exercise trainer for men.
   </div>
 
-  <p id="progressText">0 / 10 contractions completed</p>
+  <div class="card">
 
-</div>
+    <div class="phase" id="phase">
+      Ready
+    </div>
 
-<div class="card stats">
+    <div class="timer" id="timer">
+      5
+    </div>
 
-  <div class="stat">
-    <strong id="sessions">0</strong>
-    <span>Sessions</span>
+    <div class="instruction" id="instruction">
+      Press Start when you are ready.
+    </div>
+
+    <button class="start" id="startButton" onclick="startWorkout()">
+      ▶️ Start Exercise
+    </button>
+
+    <button class="stop" onclick="stopWorkout()">
+      ■ Stop
+    </button>
+
   </div>
 
-  <div class="stat">
-    <strong id="contractions">0</strong>
-    <span>Contractions</span>
+
+  <div class="card">
+
+    <h2>Today's Progress</h2>
+
+    <div class="stats">
+
+      <div>
+        <div class="stat-number" id="todayCount">0</div>
+        <div class="stat-label">Sessions</div>
+      </div>
+
+      <div>
+        <div class="stat-number" id="streak">0</div>
+        <div class="stat-label">Day Streak</div>
+      </div>
+
+    </div>
+
+    <div class="progress-bar">
+      <div class="progress" id="progress"></div>
+    </div>
+
+    <p id="progressText">0 / 10 contractions</p>
+
   </div>
 
-  <div class="stat">
-    <strong id="days">0</strong>
-    <span>Days</span>
+
+  <div class="card">
+
+    <h2>Workout</h2>
+
+    <p>
+      10 contractions
+    </p>
+
+    <p>
+      Squeeze for 5 seconds
+    </p>
+
+    <p>
+      Relax for 5 seconds
+    </p>
+
+  </div>
+
+  <div class="notice">
+    Stop if you experience pain or discomfort. This app is for exercise guidance
+    and does not replace medical advice.
   </div>
 
 </div>
 
-<div class="card info">
-
-  <h2>How it works</h2>
-
-  <p>
-    Sit or lie comfortably. Tighten your pelvic floor muscles
-    gently during the squeeze phase, then completely relax during
-    the rest phase.
-  </p>
-
-  <p>
-    Do not hold your breath. Keep your stomach, buttocks and legs
-    relaxed.
-  </p>
-
-</div>
-
-<footer>
-  My-Kegel Coach • Daily exercise trainer
-</footer>
-
-</div>
 
 <script>
 
 let timer;
 let seconds = 5;
+let contraction = 0;
+let phase = "squeeze";
 let running = false;
-let squeeze = true;
-let completed = 0;
 
-const target = 10;
+const TOTAL = 10;
 
-function updateDisplay() {
 
-  document.getElementById("timer").textContent = seconds;
+// Load saved data
+let savedSessions =
+  Number(localStorage.getItem("kegelSessions")) || 0;
 
-  if (squeeze) {
-
-    document.getElementById("phase").textContent = "SQUEEZE";
-
-    document.getElementById("instruction").textContent =
-      "Gently tighten your pelvic floor muscles.";
-
-  } else {
-
-    document.getElementById("phase").textContent = "RELAX";
-
-    document.getElementById("instruction").textContent =
-      "Relax completely and breathe normally.";
-  }
-
-}
-
-function startWorkout() {
-
-  if (running) return;
-
-  running = true;
-  squeeze = true;
-  seconds = 5;
-
-  updateDisplay();
-
-  timer = setInterval(function() {
-
-    seconds--;
-
-    if (seconds <= 0) {
-
-      if (squeeze) {
-
-        completed++;
-
-        updateProgress();
-
-        if (completed >= target) {
-
-          finishWorkout();
-          return;
-        }
-
-        squeeze = false;
-        seconds = 5;
-
-      } else {
-
-        squeeze = true;
-        seconds = 5;
-
-      }
-
-    }
-
-    updateDisplay();
-
-  }, 1000);
-
-}
-
-function stopWorkout() {
-
-  clearInterval(timer);
-
-  running = false;
-  squeeze = true;
-  seconds = 5;
-
-  document.getElementById("phase").textContent = "Paused";
-  document.getElementById("timer").textContent = "5";
-  document.getElementById("instruction").textContent =
-    "Press Start Workout to continue.";
-
-}
-
-function finishWorkout() {
-
-  clearInterval(timer);
-
-  running = false;
-
-  document.getElementById("phase").textContent =
-    "🎉 Workout Complete!";
-
-  document.getElementById("timer").textContent = "✓";
-
-  document.getElementById("instruction").textContent =
-    "Great job. You completed today's workout.";
-
-  saveStats();
-
-}
-
-function updateProgress() {
-
-  let percent = (completed / target) * 100;
-
-  document.getElementById("progress").style.width =
-    percent + "%";
-
-  document.getElementById("progressText").textContent =
-    completed + " / " + target + " contractions completed";
-
-  document.getElementById("contractions").textContent =
-    completed;
-
-}
-
-function saveStats() {
-
-  let sessions =
-    Number(localStorage.getItem("sessions") || 0) + 1;
-
-  localStorage.setItem("sessions", sessions);
-
-  document.getElementById("sessions").textContent =
-    sessions;
-
-}
-
-function loadStats() {
-
-  let sessions =
-    Number(localStorage.getItem("sessions") || 0);
-
-  document.getElementById("sessions").textContent =
-    sessions;
-
-}
-
-updateDisplay();
-loadStats();
-
-</script>
-
-</body>
-</html>
+let savedContractions =
+  Number(localStorage
